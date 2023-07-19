@@ -28,7 +28,7 @@ There are two ways to run it on Windows.
 1. The automatic install script: 
   Simply copy-paste and run this one liner in [PowerShell](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/) or the [Command Prompt](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/). It is tested on Windows 10+, but should still work all the way back to 7.
 ```
-powershell -C "iwr https://raw.githubusercontent.com/dajix350/master/win/install.bat -O install.bat; .\install.bat"
+powershell -C "iwr https://raw.githubusercontent.com/dajix350/lifesh/master/win/install.bat -O install.bat; .\install.bat"
 ```
 2. Through WSL:
   The Linux install instructions will work fine through WSL if you already have it installed. If you don't, just use the one liner above.
