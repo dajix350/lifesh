@@ -5,7 +5,7 @@ This is a WIP life simulator game written in POSIX compliant shell scripts. In t
 
 This is intended to be less of an actual game, and more as a project for me to learn shell scripting. Any feedback will be greatly appreciated!
 
-Currently, I have only implemented life creation, saving and loading.
+**NOTE:** The current version is **PRE ALPHA** quality. There is not much game to play yet, and any updates could be incompatible with previous saves.
 
 ## INSTALLATION
 
