@@ -15,6 +15,12 @@ genstat() {
         export "$1"="$(shuf -i 50-100 -n1)"
       fi
 }
+imp() {
+  for file in "$datadir"/"$name"/*
+    do
+      . "$file"
+    done
+}
 ## Year Starting Event ##
 ageevent() {
 if [ "$age" = 1 ]; then
@@ -132,6 +138,7 @@ dew=1
 fi
 
 echo "=== Entering Life ==="
+imp
 echo "Run 'help' for a list of commands with descriptions, or 'tut' for a basic tutorial"
 # Interaction
 while [ $dew = 1 ]; do
