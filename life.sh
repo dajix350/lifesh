@@ -3,7 +3,11 @@
 ## SET VARIABLES ##
 dew=1
 dew2=1
-export datadir="${XDG_DATA_HOME:-$HOME/.local/share}/life.sh"
+if [ "$port" = 1 ]; then
+  export datadir="./saves/"
+else
+  export datadir="${XDG_DATA_HOME:-$HOME/.local/share}/life.sh"
+fi
 mkdir -p "$datadir"
 name="0"
 
