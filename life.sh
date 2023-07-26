@@ -1,8 +1,6 @@
 #!/bin/bash
 
 ## SET VARIABLES ##
-dew=1
-dew2=1
 if [ "$port" = 1 ]; then
   export datadir="./saves/"
 else
@@ -77,22 +75,21 @@ esac
 
 if [ "$name" = 0 ]; then
 ## PROMPT ##
-while [ $dew = 1 ]; do
+while :; do
 echo "[1] New Life | [2] Load Life"
 read -p ">> " -r response
 
   ## CREATE ##
   if [ "$response" = "1" ]; then
-    dew2=1
-    while [ $dew2 = 1 ]; do
+    while :; do
     echo "[M]ale or [F]emale?"
     read -p ">> " -r response
       if [ "$response" = "m" ]; then
         export sex=male
-        dew2=0
+        break
       elif [ "$response" = "f" ]; then
         export sex=female
-        dew2=0
+        break
       else
         echo "Invalid reponse"
     fi
@@ -119,38 +116,36 @@ read -p ">> " -r response
     export sex
 
     echo "I am $name, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
-    dew=0
+    break
   ## LOAD ##
   elif [ "$response" = "2" ]; then 
     echo "Choose a name from these options. Make sure to spell it exactly (case sensitive), or the script will error"
-    while [ $dew2 = 1 ]; do find "$datadir" -printf '%P | '; echo; read -p ">> " -r name
+    while :; do find "$datadir" -printf '%P | '; echo; read -p ">> " -r name
     if  test -s "$datadir"/"$name"; then
-      dew2=0
+      break
     else
       echo "Life not found, it may be incorrectly spelt, try again"
     fi
     done
     export name
     . "$datadir"/"$name"
-    dew=0
-
+    break
   else
     echo "Invalid Response, try again"
   fi
 done
-dew=1
 fi
 
 echo "=== Entering Life ==="
 imp
 echo "Run 'help' for a list of commands with descriptions, or 'tut' for a basic tutorial"
 # Interaction
-while [ $dew = 1 ]; do
+while :; do
 read -p ">> " -r "act"
 case $act in
   age) echo "Ageing up"; age=$((age+1)); ageevent
   ;;
-  "stop") echo "Saving"; dew=0 ;;
+  "stop") echo "Saving"; break ;;
   stat) stat;;
   help) printf " age: Complete year and start next \n stat: List current statistics \n stop: Save and exit \n help: View this menu \n" ;;
   *) echo "Invalid Command"
