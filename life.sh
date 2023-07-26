@@ -65,8 +65,8 @@ DATA DIR = $datadir"
     echo "Starting $name's life"
     ;;
   *) export debug=0 # If no flags are detected, start game normally #
-  clear
-  echo "Welcome to
+  echo "
+                       Welcome to
 
  _       _________ _______  _______     _______          
 ( \      \__   __/(  ____ \(  ____ \   (  ____ \|\     /|
@@ -75,7 +75,8 @@ DATA DIR = $datadir"
 | |         | |   |  __)   |  __)      (_____  )|  ___  |
 | |         | |   | (      | (               ) || (   ) |
 | (____/\___) (___| )      | (____/\ _ /\____) || )   ( |
-(_______/\_______/|/       (_______/(_)\_______)|/     \|"
+(_______/\_______/|/       (_______/(_)\_______)|/     \|
+"
   sleep 0.5
 esac 
 
@@ -106,8 +107,8 @@ read -p ">> " -r response
     # String Statistics (name, location, etc) #
     echo "Enter your characters first name"
     read -p ">> " -r name
-    echo "Enter your characters sirname/family name"
-    read -p ">> " -r name
+    echo "Enter your characters last name"
+    read -p ">> " -r fname
     echo "Enter your characters town/city name (Note that this town will be in Australia. It can be fictional or real)"
     read -p ">> " -r town
     # echo "Enter your characters country name"
@@ -122,12 +123,13 @@ read -p ">> " -r response
     export age=0
     export happy=100
     export name
+    export fname
     export town
     export country
     export sex
 
     # Tell player their decisions in formatted language #
-    echo "I am $name, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
+    echo "I am $name $fname, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
     break
   # SAVED LIFE LOADING #
   elif [ "$response" = "2" ]; then 
