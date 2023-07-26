@@ -1,14 +1,18 @@
 #!/bin/bash
 
 ## SET VARIABLES ##
+# Data saving directory #
 if [ "$port" = 1 ]; then
   export datadir="./saves/"
 else
   export datadir="${XDG_DATA_HOME:-$HOME/.local/share}/life.sh"
 fi
 mkdir -p "$datadir"
+# Other Presets #
 name="0"
 
+## FUNCTIONS ##
+# Statistic Generation #
 genstat() {
       run=$(shuf -i 1-4 -n1)
       if [ "$run" = 1 ]; then
@@ -17,18 +21,20 @@ genstat() {
         export "$1"="$(shuf -i 50-100 -n1)"
       fi
 }
+# Import Life #
 imp() {
   for file in "$datadir"/"$name"/*
     do
       . "$file"
     done
 }
-## Year Starting Event ##
+# Year Starting Event##
 ageevent() {
 if [ "$age" = 1 ]; then
   echo Insert Start of year event here
 fi
 }
+# Echo Statistics #
 stat () {
   echo "Your name is $name
 You are $sex
@@ -39,14 +45,15 @@ You are $health% healthy
 You are $happy% happy"
 }
 
+## FLAGS ##
 case $* in
-  *-d*)
+  *-d*) # Debug Mode #
  echo "------------------
 DEBUG MODE ENABLED
 ------------------
 DATA DIR = $datadir"
   export debug=1;;
-  *-l*) 
+  *-l*) # Load life via flag #
     if  test -s "$datadir"/"$2"; then
       export "name"="$2"
       . "$datadir"/"$name"
@@ -57,7 +64,7 @@ DATA DIR = $datadir"
     export debug=1
     echo "Starting $name's life"
     ;;
-  *) export debug=0
+  *) export debug=0 # If no flags are detected, start game normally #
   clear
   echo "Welcome to
 
@@ -72,16 +79,18 @@ DATA DIR = $datadir"
   sleep 0.5
 esac 
 
-
+## HOME MENU ##
+# If no loading flag was passed #
 if [ "$name" = 0 ]; then
-## PROMPT ##
 while :; do
+# Prompt user to start or load a life #
 echo "[1] New Life | [2] Load Life"
 read -p ">> " -r response
 
-  ## CREATE ##
+  # LIFE CREATION #
   if [ "$response" = "1" ]; then
     while :; do
+    # Sex #
     echo "[M]ale or [F]emale?"
     read -p ">> " -r response
       if [ "$response" = "m" ]; then
@@ -94,20 +103,22 @@ read -p ">> " -r response
         echo "Invalid reponse"
     fi
     done
-    
-    echo "Enter your characters full name"
+    # String Statistics (name, location, etc) #
+    echo "Enter your characters first name"
+    read -p ">> " -r name
+    echo "Enter your characters sirname/family name"
     read -p ">> " -r name
     echo "Enter your characters town/city name (Note that this town will be in Australia. It can be fictional or real)"
     read -p ">> " -r town
     # echo "Enter your characters country name"
     # read -p ">> " -r country
 
-    ## Generate and export stats with a strong positive bias (1/8 chance of being below 50%) ##
+    # Value generation with a strong positive bias #
     genstat smart
     genstat look
     genstat health
 
-    ## Export other stats ##
+    # Export stats #
     export age=0
     export happy=100
     export name
@@ -115,11 +126,13 @@ read -p ">> " -r response
     export country
     export sex
 
+    # Tell player their decisions in formatted language #
     echo "I am $name, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
     break
-  ## LOAD ##
+  # SAVED LIFE LOADING #
   elif [ "$response" = "2" ]; then 
     echo "Choose a name from these options. Make sure to spell it exactly (case sensitive), or the script will error"
+    # List saved lives in data directory and prompt user to choose #
     while :; do find "$datadir" -printf '%P | '; echo; read -p ">> " -r name
     if  test -s "$datadir"/"$name"; then
       break
@@ -127,7 +140,9 @@ read -p ">> " -r response
       echo "Life not found, it may be incorrectly spelt, try again"
     fi
     done
+    # Set the chosen name as current life #
     export name
+    # Import all stats on chosen life #
     . "$datadir"/"$name"
     break
   else
@@ -136,19 +151,19 @@ read -p ">> " -r response
 done
 fi
 
+## THE GAME ##
 echo "=== Entering Life ==="
-imp
+# imp # Uncomment when stat storage rework is complete
 echo "Run 'help' for a list of commands with descriptions, or 'tut' for a basic tutorial"
-# Interaction
+# Main game UI #
 while :; do
 read -p ">> " -r "act"
 case $act in
-  age) echo "Ageing up"; age=$((age+1)); ageevent
-  ;;
-  "stop") echo "Saving"; break ;;
-  stat) stat;;
-  help) printf " age: Complete year and start next \n stat: List current statistics \n stop: Save and exit \n help: View this menu \n" ;;
-  *) echo "Invalid Command"
+  age) echo "Ageing up"; age=$((age+1)); ageevent ;; # Age
+  "stop") echo "Saving"; break ;; # Save and quit
+  stat) stat;; # Print life statistics
+  help) printf " age: Complete year and start next \n stat: List current statistics \n stop: Save and exit \n help: View this menu \n" ;; # List avalible commands
+  *) echo "Invalid Command" # Catchall
 esac 
 done
 
