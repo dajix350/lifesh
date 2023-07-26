@@ -13,17 +13,20 @@ name="0"
 
 ## FUNCTIONS ##
 # Statistic Generation #
+genrand() { 
+awk -v min="$1" -v max="$2" -v seed="$(od -An -N4 -tu4 /dev/urandom)" 'BEGIN{srand(seed+0); printf("%.2d", int(min+rand()*(max-min+1)))}'
+}
 genstat() {
-      run=$(shuf -i 1-4 -n1)
+      run=$(genrand 1 4)
       if [ "$run" = 1 ]; then
-       export "$1"="$(shuf -i 1-100 -n1)"
+       export "$1"="$(genrand 1 100)"
       else
-        export "$1"="$(shuf -i 50-100 -n1)"
+        export "$1"="$(genrand 50 100)"
       fi
 }
 # Import Life #
 imp() {
-  for file in "$datadir"/"$name"/*
+  for file in "$lifedir"/*
     do
       . "$file"
     done
@@ -106,9 +109,9 @@ read -p ">> " -r response
     done
     # String Statistics (name, location, etc) #
     echo "Enter your characters first name"
-    read -p ">> " -r name
-    echo "Enter your characters last name"
     read -p ">> " -r fname
+    echo "Enter your characters last name"
+    read -p ">> " -r lname
     echo "Enter your characters town/city name (Note that this town will be in Australia. It can be fictional or real)"
     read -p ">> " -r town
     # echo "Enter your characters country name"
@@ -122,14 +125,15 @@ read -p ">> " -r response
     # Export stats #
     export age=0
     export happy=100
-    export name
-    export fname
+    export fame
+    export lname
+    export name="$fname"-"$lname"
     export town
     export country
     export sex
 
     # Tell player their decisions in formatted language #
-    echo "I am $name $fname, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
+    echo "I am $fname $lname, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"
     break
   # SAVED LIFE LOADING #
   elif [ "$response" = "2" ]; then 
@@ -145,17 +149,19 @@ read -p ">> " -r response
     # Set the chosen name as current life #
     export name
     # Import all stats on chosen life #
-    . "$datadir"/"$name"
+    # . "$datadir"/"$name"
     break
   else
     echo "Invalid Response, try again"
   fi
 done
 fi
+export lifedir="$datadir/$name"
 
 ## THE GAME ##
 echo "=== Entering Life ==="
-# imp # Uncomment when stat storage rework is complete
+mkdir -p "$lifedir"; touch "$lifedir/test"
+imp 
 echo "Run 'help' for a list of commands with descriptions, or 'tut' for a basic tutorial"
 # Main game UI #
 while :; do
@@ -176,5 +182,5 @@ export age='$age'
 export smart='$smart'
 export look='$look'
 export health='$health'
-export happy='$happy'" > "$datadir"/"$name"
+export happy='$happy'" > "$lifedir"/player
 echo "Exiting"
