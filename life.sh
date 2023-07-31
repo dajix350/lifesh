@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## SET VARIABLES ##
 # Data saving directory #
@@ -8,6 +8,13 @@ else
   export datadir="${XDG_DATA_HOME:-$HOME/.local/share}/life.sh"
 fi
 mkdir -p "$datadir"
+# Name Lists #
+boynamelist=$(echo "Adam Aaron Alex Andy Ben Blake Brycen Caleb Cam Chad Chris Connor Dan Dave Dom Dylan Eddie Eli Ethan Felix Gabe Harry Hank Isaac Jack Jackson Jas Joe Josh Kaelan Lev Liam Lucas Luke Mase Matt Mike Nate Nigel Nick Noah Oli Oscar Pat Quinn Ryan Sam Seb Tom Vince Will Xav Zach" | tr " " "\n")
+boysnum=$(echo "$boynamelist" | wc -l)
+girlnamelist=$(echo "Abigail Alice Anna Audrey Ava Bella Chloe Clara Eleanor Ella Emma Eva Gabriella Grace Hailey Hannah Harper Hazel Isabella Ivy Jasmine Layla Leah Lily Lucy Mackenzie Madison Mia Natalie Olivia Piper Ruby Savannah Scarlett Sophia Stella Taylor Valentina Victoria Violet Willow Zoe Zara" | tr " " "\n")
+girlsnum=$(echo "$girlnamelist" | wc -l)
+surnamelist=$(echo "Adams Allen Anderson Baker Bell Bennett Brooks Brown Campbell Carter Clark Collins Cook Cooper Cox Davis Edwards Evans Garcia Gonzalez Gray Green Hall Harris Hernandez Hill Howard Jackson James Johnson Jones King Lee Lewis Lopez Martinez Martin Miller Mitchell Moore Morgan Morris Murphy Nelson Parker Perez Peterson Phillips Powell Ramirez Reed Richardson Rivera Roberts Robinson Rodriguez Rogers" | tr " " "\n")
+surnum=$(echo "$surnamelist" | wc -l)
 # Other Presets #
 name="0"
 
@@ -24,6 +31,10 @@ genstat() {
         export "$1"="$(genrand 50 100)"
       fi
 }
+# Gen People #
+genperson () {
+  true
+}
 # Import Life #
 imp() {
   for file in "$lifedir"/*
@@ -31,17 +42,31 @@ imp() {
       . "$file"
     done
 }
-# Year Starting Event##
+# Year Starting Event #
 ageevent() {
 if [ "$age" = 1 ]; then
   echo Insert Start of year event here
 fi
+}
+# Name Generator #
+genboyname() {
+  prinum=$(genrand 1 "$boysnum")
+  echo "$boynamelist" | sed -n "${prinum}p"
+}
+gengirlname() {
+  prinum=$(genrand 1 "$girlsnum")
+  echo "$girlnamelist" | sed -n "${prinum}p"
+}
+gensurname() {
+  prinum=$(genrand 1 "$surnum")
+  echo "$surnamelist" | sed -n "${prinum}p"
 }
 # Echo Statistics #
 stat () {
   echo "Your name is $name
 You are $sex
 You are $age years old
+You have \$$cash in the bank
 You are $smart% intelligent
 You have $look% looks 
 You are $health% healthy
@@ -82,7 +107,6 @@ DATA DIR = $datadir"
 "
   sleep 0.5
 esac 
-
 ## HOME MENU ##
 # If no loading flag was passed #
 if [ "$name" = 0 ]; then
@@ -125,12 +149,17 @@ read -p ">> " -r response
     # Export stats #
     export age=0
     export happy=100
+    export cash=0
     export fame
     export lname
     export name="$fname"-"$lname"
     export town
     export country
     export sex
+
+    # FAMILY #
+    # Mum #
+    # mumname="$(gengirlname)-$lname"
 
     # Tell player their decisions in formatted language #
     echo "I am $fname $lname, and I was born as a $sex in $town, Australia. I am $smart% intelligent, have $look% looks, are $health% healthy, and am $happy% happy"

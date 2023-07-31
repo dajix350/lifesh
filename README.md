@@ -28,7 +28,7 @@ This script has not been tested on macOS, but it *should* work out of the box. T
 
 
 ## TO-DO
-- [ ] Rework save structure
+- [x] Rework save structure
 - [ ] Finances
 - [ ] Careers
 - [ ] Relationships
